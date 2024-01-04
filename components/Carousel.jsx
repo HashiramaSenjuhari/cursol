@@ -1,28 +1,46 @@
-import React, { useState } from 'react';
-import './Carousel.css';
+import React, { Component } from "react";
+import "./Carousel.css";
+import { images } from "../data/CarouselData";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const Carousel = ({ images }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+class Carousel extends Component {
+constructor(){
+    super()
+    this.state={
+        count:0
+    }
+}
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
+handleClick=(operation)=>{
+    operation='left'? this.state.count!==0 ?  this.setState({count:this.state.count-1}) :   this.setState({count:images.length-1}) : this.state.count!=images.length-1 ? this.setState({count:this.state.count+1}) :    this.setState({count:0})
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+}
 
-  return (
-    <div className="carousel-container">
-      <button onClick={handlePrev} className="carousel-button">
-        Prev
-      </button>
-      <img src={images[currentIndex]} alt={`carousel-item-${currentIndex}`} className="carousel-image" />
-      <button onClick={handleNext} className="carousel-button">
-        Next
-      </button>
-    </div>
-  );
-};
+
+  render() {
+    return (
+      <div className="carousel">
+        <div
+          className="innercarousel"
+          style={{ backgroundImage: `url(${images[this.state.count].img})` }}>
+
+          <div className="leftbutton" onClick={()=>this.handleClick("left")}>
+            <ArrowBackIosIcon style={{ color: "white", fontSize: "30px" }} />
+          </div>
+
+          <div id="centerText">
+            <h1>{images[this.state.count].title}</h1>
+            <p>{images[this.state.count].subtitle}</p>
+          </div>
+
+          <div className="rightbutton" onClick={()=>this.handleClick("right")}>
+            <ArrowForwardIosIcon style={{ color: "white", fontSize: "30px" }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Carousel;
